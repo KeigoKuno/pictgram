@@ -6,8 +6,13 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { minimum: 8, maximum: 32}, format: { with: VALID_PASSWORD_REGEX}
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/
   validates :email, presence: true, format: {with: VALID_EMAIL_REGEX}
-  validates :name, length: { maximum: 15 }
+  
   
   has_secure_password
+  has_many :topics
+  has_many :favorites
+  has_many :favorite_topics, through: :favorites, source: 'topic'
+  has_many :posts, dependent: :destroy
+  has_many :comments
 end
 
